@@ -1,0 +1,6 @@
+{
+  "name": "Buckland Sheet Metal",
+  "description": "Second-generation residential gutter fabrication, standing-seam metal roofing, and custom architectural sheet metal work.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

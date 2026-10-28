@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: #FFFFFF;
+  --color-soft-panel: #F4F5F7;
+  --color-pitch: #080808;
+  --color-pitch-elevated: #141414;
+  --color-pitch-border: #262626;
+  --color-ink: #0A0A0A;
+  --color-body: #4B5563;
+  --color-muted: #6B7280;
+  --color-hairline: #E5E7EB;
+  --color-flame: #EC5B0E;
+  --color-flame-text: #C94705;
+  --color-flame-hover: #D14B06;
+  --color-sky-wedge: #D6EEFF;
+}
+
+:root {
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+
+  button, a, input, select, textarea {
+    transition-timing-function: var(--ease-settle);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-flame);
+    outline-offset: 2px;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
