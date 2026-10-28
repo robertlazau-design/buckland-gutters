@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { QUOTE_SCOPES } from '../data/catalog';
+import { BUSINESS } from '../data/business';
+import { submitToWeb3Forms } from '../lib/submitForm';
 
 export interface QuoteFormProps {
   initialScope?: string;
@@ -8,42 +11,17 @@ export interface QuoteFormProps {
   onSuccessClose?: () => void;
 }
 
-interface QuoteReceipt {
-  referenceId: string;
-  createdAt: string;
-  summary: {
-    fullName: string;
-    townOrAddress: string;
-    projectScope: string;
-    materialPreference: string;
-    stories: string;
-    timeline: string;
-  };
-}
+const SCOPE_OPTIONS = QUOTE_SCOPES;
 
-const SCOPE_OPTIONS = [
-  'Seamless Gutters & Downspouts',
-  'Standing-Seam Metal Roofing',
-  'Full Roof + Gutter Envelope',
-  'Custom Copper & Flashing',
-  'Repair / Ice-Dam Evaluation',
-];
+const MATERIAL_OPTIONS = ['Not sure, recommend one', 'Aluminum', 'Steel', 'Copper'];
 
-const MATERIAL_OPTIONS = [
-  'Recommend on site',
-  '.032" Heavy-Gauge Aluminum',
-  '24-Gauge Kynar 500® Steel',
-  '16 oz. Architectural Copper',
-  'Galvalume / Natural Zinc-Coat',
-];
-
-const STORY_OPTIONS = ['1 Story / Ranch', '2 Stories', '2.5–3 Stories / Steep Pitch', 'New Construction Plans'];
+const STORY_OPTIONS = ['1 Story', '2 Stories', '3 Stories', 'New Construction'];
 
 const TIMELINE_OPTIONS = [
-  'Active leak / Urgent',
+  'Leaking or overflowing now',
   'Next 30–60 days',
-  'Planning for next season',
-  'Comparing specs & budget',
+  'Planning ahead',
+  'Comparing quotes',
 ];
 
 export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
@@ -61,29 +39,26 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
       ? initialScope
       : 'Seamless Gutters & Downspouts'
   );
-  const [materialPreference, setMaterialPreference] = useState('Recommend on site');
+  const [materialPreference, setMaterialPreference] = useState(MATERIAL_OPTIONS[0]);
   const [stories, setStories] = useState('2 Stories');
   const [timeline, setTimeline] = useState('Next 30–60 days');
   const [notes, setNotes] = useState(
-    projectReference ? `Interested in specifications similar to: ${projectReference}` : ''
+    projectReference ? `Interested in work like: ${projectReference}` : ''
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [receipt, setReceipt] = useState<QuoteReceipt | null>(null);
+  const [sentTo, setSentTo] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialScope) {
-      const matched = SCOPE_OPTIONS.find((opt) =>
-        opt.toLowerCase().includes(initialScope.toLowerCase().split(' ')[0])
-      );
-      if (matched) setProjectScope(matched);
+      if (SCOPE_OPTIONS.includes(initialScope)) setProjectScope(initialScope);
     }
   }, [initialScope]);
 
   useEffect(() => {
     if (projectReference) {
-      setNotes(`Interested in specifications similar to: ${projectReference}`);
+      setNotes(`Interested in work like: ${projectReference}`);
     }
   }, [projectReference]);
 
@@ -118,28 +93,20 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/quotes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullName,
-          phone,
-          email,
-          townOrAddress,
-          projectScope,
-          materialPreference,
-          stories,
-          timeline,
-          notes,
-        }),
+      await submitToWeb3Forms({
+        subject: `Quote request: ${fullName.trim()}, ${townOrAddress.trim()}`,
+        from_name: 'Buckland Gutters website',
+        name: fullName.trim(),
+        phone: phone.trim(),
+        email: email.trim(),
+        address: townOrAddress.trim(),
+        service: projectScope,
+        material: materialPreference,
+        stories,
+        timing: timeline,
+        notes: notes.trim(),
       });
-
-      const payload = await response.json();
-      if (!response.ok) {
-        throw new Error(payload.error || 'Unable to log quote request right now.');
-      }
-
-      setReceipt(payload as QuoteReceipt);
+      setSentTo(fullName.trim());
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Something went wrong submitting your request.';
       setErrorMessage(msg);
@@ -148,7 +115,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
     }
   };
 
-  if (receipt) {
+  if (sentTo) {
     return (
       <div
         role="status"
@@ -158,49 +125,26 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
         <div className="flex items-start gap-3">
           <CheckCircle2 className="w-6 h-6 text-[#EC5B0E] shrink-0 mt-0.5" aria-hidden="true" />
           <div>
-            <p className="font-mono text-xs text-neutral-500 tabular-nums mb-1">
-              Shop Inquiry Reference: <strong className="text-[#0A0A0A]">{receipt.referenceId}</strong>
-            </p>
             <h3 className="font-display text-xl font-bold text-[#0A0A0A]">
-              Site Measure Request Logged for {receipt.summary.fullName}
+              Thanks, {sentTo}. Your request is in.
             </h3>
             <p className="text-sm text-neutral-600 mt-1.5 leading-[1.6]">
-              Our shop has recorded your project specifications for{' '}
-              <strong className="text-[#0A0A0A]">{receipt.summary.townOrAddress}</strong>. A Buckland sheet metal
-              mechanic will follow up to confirm exterior ladder access and measure timing.
+              We’ll get back to you to set up a time to measure. If it’s urgent, call us at{' '}
+              <span className="font-mono text-[#0A0A0A]">{BUSINESS.phone}</span>.
             </p>
           </div>
         </div>
-
-        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-neutral-200 text-xs font-mono tabular-nums">
-          <div>
-            <dt className="text-neutral-500 font-sans">Primary Scope</dt>
-            <dd className="text-[#0A0A0A] mt-0.5">{receipt.summary.projectScope}</dd>
-          </div>
-          <div>
-            <dt className="text-neutral-500 font-sans">Material Interest</dt>
-            <dd className="text-[#0A0A0A] mt-0.5">{receipt.summary.materialPreference}</dd>
-          </div>
-          <div>
-            <dt className="text-neutral-500 font-sans">Roofline Height</dt>
-            <dd className="text-[#0A0A0A] mt-0.5">{receipt.summary.stories}</dd>
-          </div>
-          <div>
-            <dt className="text-neutral-500 font-sans">Target Window</dt>
-            <dd className="text-[#0A0A0A] mt-0.5">{receipt.summary.timeline}</dd>
-          </div>
-        </dl>
 
         <div className="flex flex-wrap items-center gap-3 pt-2">
           <button
             type="button"
             onClick={() => {
-              setReceipt(null);
+              setSentTo(null);
               setNotes('');
             }}
             className="px-5 py-2.5 min-h-[40px] text-xs font-semibold text-[#0A0A0A] bg-white border border-neutral-300 hover:bg-neutral-100 rounded-full cursor-pointer"
           >
-            Submit Another Property
+            Send Another Request
           </button>
           {onSuccessClose && (
             <button
@@ -231,7 +175,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
       {/* Scope Selection */}
       <fieldset>
         <legend className="block text-xs sm:text-sm font-semibold text-[#0A0A0A] mb-2.5">
-          What does your roofline need?
+          What do you need?
         </legend>
         <div className="flex flex-wrap gap-2">
           {SCOPE_OPTIONS.map((scope) => {
@@ -268,7 +212,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
             autoComplete="name"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            placeholder="e.g. Thomas Mercer"
+            placeholder="Your name"
             className="w-full min-h-[44px] px-4 py-2.5 text-sm bg-white text-[#0A0A0A] placeholder:text-neutral-400 border border-neutral-300 rounded-xl focus:border-[#EC5B0E]"
           />
         </div>
@@ -284,7 +228,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
             autoComplete="street-address"
             value={townOrAddress}
             onChange={(e) => setTownOrAddress(e.target.value)}
-            placeholder="Street & Town for ladder measure"
+            placeholder="Street address and city"
             className="w-full min-h-[44px] px-4 py-2.5 text-sm bg-white text-[#0A0A0A] placeholder:text-neutral-400 border border-neutral-300 rounded-xl focus:border-[#EC5B0E]"
           />
         </div>
@@ -306,7 +250,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
 
         <div>
           <label htmlFor={compact ? 'modal-email' : 'page-email'} className="block text-xs font-semibold text-[#0A0A0A] mb-1.5">
-            Email Address (for written spec PDF)
+            Email
           </label>
           <input
             id={compact ? 'modal-email' : 'page-email'}
@@ -324,7 +268,7 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label htmlFor={compact ? 'modal-material' : 'page-material'} className="block text-xs font-semibold text-[#0A0A0A] mb-1.5">
-            Preferred Metal
+            Material
           </label>
           <select
             id={compact ? 'modal-material' : 'page-material'}
@@ -380,14 +324,14 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
       {/* Project Notes */}
       <div>
         <label htmlFor={compact ? 'modal-notes' : 'page-notes'} className="block text-xs font-semibold text-[#0A0A0A] mb-1.5">
-          Roofline or Drainage Notes (optional)
+          Anything we should know? (optional)
         </label>
         <textarea
           id={compact ? 'modal-notes' : 'page-notes'}
           rows={compact ? 3 : 4}
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          placeholder="Describe overflowing corners, ice dams, fascia condition, chimney leaks, or desired color finish..."
+          placeholder="Overflowing corners, sagging runs, leaks, rotten fascia, a color you like..."
           className="w-full px-4 py-2.5 text-sm bg-white text-[#0A0A0A] placeholder:text-neutral-400 border border-neutral-300 rounded-xl focus:border-[#EC5B0E]"
         />
       </div>
@@ -401,15 +345,15 @@ export const QuoteEstimatorForm: React.FC<QuoteFormProps> = ({
           {isSubmitting ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-              <span>Sending to Shop...</span>
+              <span>Sending...</span>
             </>
           ) : (
-            <span>Request Written Quote</span>
+            <span>Request a Free Quote</span>
           )}
         </button>
 
         <p className="text-xs text-neutral-500">
-          Reviewed directly by Buckland Sheet Metal—never sold to lead brokers.
+          Goes straight to Buckland Gutters. We never sell your information.
         </p>
       </div>
     </form>

@@ -13,7 +13,7 @@ export const ResilientImage: React.FC<ResilientImageProps> = ({
   alt,
   className = '',
   eager = false,
-  fallbackLabel = 'Buckland Architectural Sheet Metal',
+  fallbackLabel = 'Buckland Gutters',
 }) => {
   const [hasError, setHasError] = useState(false);
 

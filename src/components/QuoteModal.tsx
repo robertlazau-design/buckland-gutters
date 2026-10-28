@@ -44,16 +44,16 @@ export const QuoteModal: React.FC<QuoteModalProps> = ({
       >
         <div className="flex items-center justify-between gap-4 px-5 sm:px-7 py-4 border-b border-neutral-200 bg-[#F4F5F7]">
           <div>
-            <p className="text-xs font-mono text-neutral-500">Buckland Sheet Metal · Site Measure Intake</p>
+            <p className="text-xs font-mono text-neutral-500">Buckland Gutters · Free Quote</p>
             <h2 id="quote-modal-heading" className="font-display text-lg sm:text-xl font-bold text-[#0A0A0A]">
-              Request a Residential Quote
+              Get a Free Quote
             </h2>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close quote request modal"
+            aria-label="Close quote form"
             className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-neutral-300 bg-white text-[#0A0A0A] hover:bg-neutral-100 cursor-pointer shrink-0"
           >
             <X className="w-4 h-4" />

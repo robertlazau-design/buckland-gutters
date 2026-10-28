@@ -6,11 +6,10 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'Story', href: '#craft' },
-  { label: 'Services', href: '#systems' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '/#systems' },
+  { label: 'Our Work', href: '/#projects' },
+  { label: 'Our Story', href: '/#craft' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenQuoteModal }) => {
@@ -19,9 +18,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuoteModal }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-neutral-100">
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between gap-8">
-        {/* Zone 1: Single brand link with architectural roof-peak emblem */}
+        {/* Zone 1: Single brand link with emblem */}
         <a
-          href="#top"
+          href="/"
           className="inline-flex items-center gap-2 font-display text-base sm:text-lg font-extrabold tracking-tight text-[#0A0A0A] whitespace-nowrap shrink-0"
         >
           <svg
@@ -36,7 +35,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuoteModal }) => {
             <path d="M6.5 16L13.5 4" stroke="#EC5B0E" strokeWidth="2.4" strokeLinecap="round" />
             <path d="M11 17L17.5 6L24 17" stroke="#0A0A0A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span>BUCKLAND</span>
+          <span>
+            BUCKLAND<span className="hidden min-[420px]:inline"> GUTTERS</span>
+          </span>
         </a>
 
         {/* Zone 2: Concise single-line navigation links */}
@@ -59,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenQuoteModal }) => {
             onClick={() => onOpenQuoteModal()}
             className="px-5 py-2.5 min-h-[40px] text-xs sm:text-sm font-semibold text-white bg-[#0A0A0A] hover:bg-[#EC5B0E] rounded-full transition-colors duration-150 whitespace-nowrap shrink-0 cursor-pointer"
           >
-            Request a Quote
+            Get a Quote
           </button>
 
           <button

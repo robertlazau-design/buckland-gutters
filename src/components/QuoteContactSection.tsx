@@ -1,5 +1,6 @@
 import React from 'react';
 import { SITE_VISIT_STEPS } from '../data/catalog';
+import { BUSINESS } from '../data/business';
 import { QuoteEstimatorForm } from './QuoteEstimatorForm';
 
 interface QuoteContactSectionProps {
@@ -16,19 +17,19 @@ export const QuoteContactSection: React.FC<QuoteContactSectionProps> = ({
   return (
     <section id="contact" className="bg-white pt-4 pb-10 sm:pb-14">
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-10">
-        {/* Signature Rounded Soft-Panel Container Inspired by Reference Bottom Card */}
+        {/* Signature Rounded Soft-Panel Container */}
         <div className="bg-[#F4F5F7] rounded-3xl px-5 py-12 sm:px-10 sm:py-16 lg:px-14 lg:py-20 space-y-12 sm:space-y-16">
           {/* Centered Friendly Editorial Callout */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <h2 className="font-display font-medium tracking-tight text-[#0A0A0A] text-[clamp(2rem,3.8vw,3.15rem)] leading-[1.1]">
-              Is your Roof or Gutter leaking?
+              Gutters Overflowing or Leaking?
             </h2>
             <p className="text-sm sm:text-lg text-neutral-600">
-              Our second-generation shop measures directly on site—zero commission sales pitches.
+              A second-generation family business comes out, measures and gives you a written quote. No sales pitch.
             </p>
           </div>
 
-          {/* 3-Step Mechanic Measure Reassurance Row */}
+          {/* 3-Step Process Row */}
           <div id="process" className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {SITE_VISIT_STEPS.map((item) => (
               <div
@@ -51,39 +52,39 @@ export const QuoteContactSection: React.FC<QuoteContactSectionProps> = ({
             ))}
           </div>
 
-          {/* Split Direct Shop Info + Embedded Residential Quote Form */}
+          {/* Contact Info + Quote Form */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start pt-2">
             <div className="lg:col-span-4 space-y-5">
               <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A0A0A]">
-                Direct Shop Dispatch &amp; Service Area
+                Contact Buckland Gutters
               </h3>
               <p className="text-sm text-neutral-600 leading-[1.6]">
-                Send your street town and roofline scope for an itemized written specification covering metal gauge, hanger spacing, and flashing transitions.
+                Tell us about your home and what’s going on with your gutters. We’ll get back to you to set up a time to measure.
               </p>
 
               <dl className="space-y-3.5 pt-3 border-t border-neutral-200 text-xs sm:text-sm">
                 <div>
-                  <dt className="text-neutral-500 mb-0.5">Direct Shop Phone</dt>
+                  <dt className="text-neutral-500 mb-0.5">Phone</dt>
                   <dd className="font-mono font-medium text-[#0A0A0A] tabular-nums">
-                    [PLACEHOLDER: Direct Shop Phone]
+                    {BUSINESS.phone}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-neutral-500 mb-0.5">Fabrication Shop Address</dt>
+                  <dt className="text-neutral-500 mb-0.5">Email</dt>
                   <dd className="font-mono text-[#0A0A0A]">
-                    [PLACEHOLDER: Street, Town, State ZIP]
+                    {BUSINESS.email}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-neutral-500 mb-0.5">Towns Served</dt>
+                  <dt className="text-neutral-500 mb-0.5">Service Area</dt>
                   <dd className="font-mono text-[#0A0A0A]">
-                    [PLACEHOLDER: List Primary Service Towns]
+                    {BUSINESS.serviceArea}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-neutral-500 mb-0.5">License &amp; Insurance</dt>
+                  <dt className="text-neutral-500 mb-0.5">License</dt>
                   <dd className="font-mono text-[#0A0A0A] tabular-nums">
-                    [PLACEHOLDER: State License #] · Insured
+                    Oregon CCB {BUSINESS.ccb}
                   </dd>
                 </div>
               </dl>
@@ -106,10 +107,10 @@ export const QuoteContactSection: React.FC<QuoteContactSectionProps> = ({
                   <path d="M6.5 16L13.5 4" stroke="#EC5B0E" strokeWidth="2.4" strokeLinecap="round" />
                   <path d="M11 17L17.5 6L24 17" stroke="#0A0A0A" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span>BUCKLAND</span>
+                <span>BUCKLAND GUTTERS</span>
               </a>
               <span className="text-xs text-neutral-500">
-                © {currentYear} Buckland Sheet Metal
+                © {currentYear} {BUSINESS.name}
               </span>
             </div>
 
@@ -124,14 +125,14 @@ export const QuoteContactSection: React.FC<QuoteContactSectionProps> = ({
                 Our Projects
               </a>
               <a href="#process" className="hover:text-[#0A0A0A] whitespace-nowrap">
-                Site Measures
+                How It Works
               </a>
               <button
                 type="button"
                 onClick={() => onOpenQuoteModal()}
                 className="font-semibold text-[#C94705] hover:underline underline-offset-4 whitespace-nowrap cursor-pointer"
               >
-                Request Quote
+                Get a Quote
               </button>
             </div>
           </footer>

@@ -1,269 +1,242 @@
-import heroCraftImg from '../assets/images/hero_standing_seam_craft_1793042380195.jpg';
-import copperHalfroundImg from '../assets/images/project_copper_halfround_1793042382522.jpg';
-import charcoalRoofImg from '../assets/images/project_charcoal_standing_seam_1793042383300.jpg';
-import chimneyFlashingImg from '../assets/images/project_custom_chimney_flashing_1793042384861.jpg';
-import shopBrakeImg from '../assets/images/shop_sheet_metal_brake_1793042384661.jpg';
+// Services, projects and the estimate steps shown on the site.
+//
+// The photos are AI-generated placeholders from Google AI Studio. Replace every one with a real
+// Buckland job photo before launch; never present them as Buckland's own work on the live site.
+//
+// [CONFIRM: ...] marks a detail AI Studio suggested that Greg has not confirmed yet.
+// [PLACEHOLDER: ...] marks a fact we still need from him. Both must be gone before launch.
+import gutterReturnImg from '../assets/images/placeholder-gutter-return.jpg';
+import copperHalfRoundImg from '../assets/images/placeholder-copper-half-round.jpg';
+import twoStoryGuttersImg from '../assets/images/placeholder-two-story-gutters.jpg';
+import shopBrakeImg from '../assets/images/placeholder-shop-brake.jpg';
 
-export type SystemCategoryId = 'gutters' | 'roofing' | 'flashing';
-
-export interface SystemSpecification {
-  id: SystemCategoryId;
+export interface ServiceSpecification {
+  id: string;
   index: string;
   title: string;
-  shortLabel: string;
+  quotePreset: string;
   summary: string;
-  problemSolved: string;
   image: string;
   imageAlt: string;
   specs: {
     label: string;
     bucklandSpec: string;
-    builderDefault: string;
+    typical: string;
   }[];
-  profilesAvailable: string[];
 }
 
-export type ProjectFilterCategory = 'all' | 'roofing' | 'gutters' | 'copper';
+export type ProjectFilterCategory = 'all' | 'seamless' | 'copper' | 'replacement';
 
 export interface ResidentialProject {
   id: string;
   title: string;
   category: Exclude<ProjectFilterCategory, 'all'>;
   categoryLabel: string;
-  townPlaceholder: string;
+  neighborhood: string;
   profileSpec: string;
-  materialGauge: string;
+  material: string;
   scopeSummary: string;
   craftDetail: string;
   image: string;
   imageAlt: string;
-  featuredWide?: boolean;
 }
 
+export const QUOTE_SCOPES = [
+  'Seamless Gutters & Downspouts',
+  'Copper Gutters',
+  'Gutter Replacement',
+  'Downspouts & Drainage',
+  'Not sure yet',
+];
+
 export const HERO_IMAGE = {
-  src: heroCraftImg,
-  alt: 'Residential standing-seam charcoal metal roof meeting a hand-seamed copper half-round gutter and mitered return downspout on a clapboard home.',
+  src: gutterReturnImg,
+  alt: 'Placeholder image: copper half-round gutter and downspout return on a clapboard home.',
 };
 
 export const SHOP_IMAGE = {
   src: shopBrakeImg,
-  alt: 'Inside the Buckland Sheet Metal workshop showing a heavy sheet-metal bending brake, layout square, hand snips, and coils of Galvalume steel and raw architectural copper.',
+  alt: 'Placeholder image: sheet-metal bending brake and coils of gutter metal in a shop.',
 };
 
-export const SYSTEM_SPECIFICATIONS: SystemSpecification[] = [
+export const SERVICES: ServiceSpecification[] = [
   {
-    id: 'gutters',
+    id: 'seamless',
     index: '01',
-    title: 'Continuous Heavy-Gauge Gutters & Downspouts',
-    shortLabel: 'Seamless Gutters',
+    title: 'Seamless Gutters',
+    quotePreset: 'Seamless Gutters & Downspouts',
     summary:
-      'Run continuous on-site to the exact foot of your fascia board—eliminating intermediate lap seams that drip, separate in freeze-thaw cycles, and rot sill plates.',
-    problemSolved:
-      'Stops foundation washout, basement seepage, and fascia board decay caused by undersized 5-inch troughs and wide-spaced spike-and-ferrule fasteners.',
-    image: copperHalfroundImg,
-    imageAlt:
-      'Close-up of a 16-ounce architectural copper half-round gutter supported by heavy brass brackets and connected to a soldered round copper outlet.',
+      'Formed at your home in one continuous length for each run of roofline, so there are no joints along the run to drip or pull apart in Portland’s long rainy season.',
+    image: twoStoryGuttersImg,
+    imageAlt: 'Placeholder image: two-story home with dark seamless gutters and downspouts.',
     specs: [
       {
-        label: 'Aluminum Wall Thickness',
-        bucklandSpec: '.032" heavy architectural coil',
-        builderDefault: '.024"–.027" light coil (buckles under ladder/ice)',
+        label: 'Material',
+        bucklandSpec: 'Aluminum or steel, baked-on enamel finish',
+        typical: 'Snap-together sections from the hardware store',
       },
       {
-        label: 'Copper Weight Option',
-        bucklandSpec: '16 oz. & 20 oz. cold-rolled copper',
-        builderDefault: 'Painted aluminum "copper-look" only',
+        label: 'Gutter Size',
+        bucklandSpec: '[CONFIRM: 5" and 6" K-style]',
+        typical: '5" on every house, whatever the roof size',
       },
       {
-        label: 'Hanger Spacing',
-        bucklandSpec: '16"–24" O.C. hidden structural screw hangers',
-        builderDefault: '36"+ spikes that pull out of wet rafter tails',
+        label: 'Metal Thickness',
+        bucklandSpec: '[CONFIRM: .032" aluminum]',
+        typical: 'Thinner coil that dents under a ladder',
       },
       {
-        label: 'Corners & Outlets',
-        bucklandSpec: 'Hand-cut miters & oversized 3"x4" or 4" round drops',
-        builderDefault: 'Snap-on plastic strip miters & 2"x3" bottleneck drops',
+        label: 'Hangers',
+        bucklandSpec: '[CONFIRM: hidden screw hangers, spacing]',
+        typical: 'Spikes that work loose from wet fascia',
       },
-    ],
-    profilesAvailable: [
-      '5" & 6" Seamless K-Style (.032" Aluminum)',
-      '6" Architectural Half-Round (16 oz. Copper or Galvalume)',
-      'Custom Box & Fascia-Integrated Gutters',
-      '3"x4" Corrugated & 3"/4" Smooth Round Downspouts',
     ],
   },
   {
-    id: 'roofing',
+    id: 'copper',
     index: '02',
-    title: 'Concealed-Fastener Standing-Seam Metal Roofing',
-    shortLabel: 'Standing-Seam Roofing',
+    title: 'Copper Gutters',
+    quotePreset: 'Copper Gutters',
     summary:
-      'Interlocking vertical-rib panels anchored with concealed expansion clips—zero exposed neoprene washer screws to dry out, crack, or back out over decades of thermal movement.',
-    problemSolved:
-      'Replaces curling asphalt shingles that shed granules into gutters every storm with a high-wind, snow-shedding steel or copper envelope.',
-    image: charcoalRoofImg,
-    imageAlt:
-      'Two-story residential gable home finished with a matte slate-gray standing-seam metal roof, snow retention rails, and matching heavy-gauge gutters.',
+      'Copper gutters and downspouts for homes that deserve them. Copper weathers from bright to brown to green and lasts for generations.',
+    image: copperHalfRoundImg,
+    imageAlt: 'Placeholder image: copper half-round gutter on brass brackets with a round outlet.',
     specs: [
       {
-        label: 'Panel Substrate',
-        bucklandSpec: '24-gauge Galvalume steel or 16 oz. copper',
-        builderDefault: '26–29 gauge thin agricultural/barn rib panel',
+        label: 'Profiles',
+        bucklandSpec: '[CONFIRM: half-round and K-style]',
+        typical: 'Painted aluminum in a “copper” color',
       },
       {
-        label: 'Finish Chemistry',
-        bucklandSpec: '70% PVDF (Kynar 500® / Hylar 5000®) resin',
-        builderDefault: 'SMP polyester paint (chalks & fades unevenly)',
+        label: 'Copper Weight',
+        bucklandSpec: '[CONFIRM: 16 oz. copper]',
+        typical: 'Thin copper that buckles',
       },
       {
-        label: 'Fastening Method',
-        bucklandSpec: 'Concealed floating stainless clips for thermal travel',
-        builderDefault: 'Exposed face-screws piercing the weather plane',
+        label: 'Joints',
+        bucklandSpec: '[CONFIRM: soldered seams and outlets]',
+        typical: 'Caulked joints that peel in a few winters',
       },
-      {
-        label: 'Valleys, Ridge & Eaves',
-        bucklandSpec: 'Shop-formed hemmed drip edge & vented z-closure ridge',
-        builderDefault: 'Exposed foam closures that birds & ice dislodge',
-      },
-    ],
-    profilesAvailable: [
-      '1.5" Mechanical Double-Lock Standing Seam (Low & Steep Slope)',
-      '1.75" Snap-Lock Architectural Seam',
-      'Custom Porch, Dormer & Bay-Window Accent Roofs',
-      'Color-Matched Bar-Style Snow Retention Systems',
     ],
   },
   {
-    id: 'flashing',
+    id: 'replacement',
     index: '03',
-    title: 'Brake-Formed Masonry Flashing & Soldered Joinery',
-    shortLabel: 'Custom Flashing & Copper',
+    title: 'Gutter Replacement',
+    quotePreset: 'Gutter Replacement',
     summary:
-      'Where roofs actually leak is rarely the open field—it is chimneys, dormers, dead valleys, and skylight curbs. Every flashing transition is bent on our shop brake to fit your masonry.',
-    problemSolved:
-      'Eliminates reliance on tubes of roof caulk and tar patches by mechanically locking water away from stone, brick, and cedar intersections.',
-    image: chimneyFlashingImg,
-    imageAlt:
-      'Hand-soldered 16-ounce copper chimney saddle cricket and stepped counter-flashing let cleanly into fieldstone mortar joints on a standing-seam roof.',
+      'We take down the old gutters, haul them away and hang a new seamless system, so overflowing corners and leaking joints are gone for good.',
+    image: gutterReturnImg,
+    imageAlt: 'Placeholder image: new gutter and downspout return on a home’s corner.',
     specs: [
       {
-        label: 'Chimney & Wall Reglets',
-        bucklandSpec: '2-piece step & diamond-cut mortar counter-flashing',
-        builderDefault: 'Surface-caulked aluminum bent against brick face',
+        label: 'Old Gutters',
+        bucklandSpec: 'Removed and hauled away',
+        typical: 'Left in a pile by the driveway',
       },
       {
-        label: 'Behind-Chimney Drainage',
-        bucklandSpec: 'Custom brake-formed & silver/50-50 soldered cricket',
-        builderDefault: 'Shingle-wrapped dead pocket that traps snowmelt',
+        label: 'Fascia',
+        bucklandSpec: '[CONFIRM: checked and repaired before hanging]',
+        typical: 'New gutters hung on rotten boards',
       },
       {
-        label: 'Collector Heads & Scuppers',
-        bucklandSpec: 'Shop-fabricated copper/zinc leader heads & overflows',
-        builderDefault: 'Off-the-shelf thin stamped tin',
-      },
-      {
-        label: 'Workmanship Guarantee',
-        bucklandSpec: '[PLACEHOLDER: Buckland Written Workmanship Warranty Term]',
-        builderDefault: '1-year subcontractor pass-through',
+        label: 'Warranty',
+        bucklandSpec: '[PLACEHOLDER: Buckland workmanship warranty]',
+        typical: 'Unclear or verbal only',
       },
     ],
-    profilesAvailable: [
-      'Soldered Copper Chimney Crickets & Step/Counter Flashing',
-      'Custom Dormer Cheek, Apron & Headwall Flashings',
-      'Architectural Leader Heads / Conductor Boxes',
-      'Custom Louvers, Finials & Drip-Edge Restorations',
-  ],
+  },
+  {
+    id: 'downspouts',
+    index: '04',
+    title: 'Downspouts & Drainage',
+    quotePreset: 'Downspouts & Drainage',
+    summary:
+      'Downspouts sized and placed to carry a Portland downpour away from your foundation, siding and walkways.',
+    image: twoStoryGuttersImg,
+    imageAlt: 'Placeholder image: downspouts on the corners of a two-story home.',
+    specs: [
+      {
+        label: 'Downspout Size',
+        bucklandSpec: '[CONFIRM: 2"x3" and 3"x4"]',
+        typical: 'One small size for every roof',
+      },
+      {
+        label: 'Placement',
+        bucklandSpec: 'Planned from how much roof drains to each corner',
+        typical: 'Wherever the old ones were',
+      },
+      {
+        label: 'Materials',
+        bucklandSpec: 'Aluminum, steel or copper to match the gutters',
+        typical: 'Mismatched parts',
+      },
+    ],
   },
 ];
 
 export const RESIDENTIAL_PROJECTS: ResidentialProject[] = [
   {
-    id: 'gable-standing-seam-envelope',
-    title: 'Full Gable Standing-Seam Roof & K-Style Drainage System',
-    category: 'roofing',
-    categoryLabel: 'Standing-Seam Roof + Gutters',
-    townPlaceholder: '[PLACEHOLDER: Town / Neighborhood]',
-    profileSpec: '1.5" Concealed-Clip Seam · 6" Seamless K-Style',
-    materialGauge: '24-Ga Matte Slate PVDF Steel · .032" Dark Bronze Aluminum',
-    scopeSummary:
-      'Complete tear-off and installation of 24-gauge standing-seam panels across main gable, dormers, and wrap-around farmer’s porch, paired with bar-style snow guards over entries and continuous 6-inch gutters.',
-    craftDetail:
-      'Custom hemmed eaves lock directly over the gutter apron so wind-driven rain cannot wick behind the fascia board.',
-    image: charcoalRoofImg,
-    imageAlt:
-      'Two-story white clapboard residential home featuring a matte slate standing-seam metal roof, snow guards over walkways, and dark bronze seamless gutters.',
-    featuredWide: true,
+    id: 'two-story-seamless',
+    title: 'Two-Story Seamless Gutter System',
+    category: 'seamless',
+    categoryLabel: 'Seamless Gutters',
+    neighborhood: '[PLACEHOLDER: Neighborhood]',
+    profileSpec: '[CONFIRM: 6" K-style · 3"x4" downspouts]',
+    material: '[CONFIRM: aluminum, color]',
+    scopeSummary: '[PLACEHOLDER: what the job was, in one or two sentences]',
+    craftDetail: '[PLACEHOLDER: one detail worth pointing out]',
+    image: twoStoryGuttersImg,
+    imageAlt: 'Placeholder image: two-story home with dark seamless gutters.',
   },
   {
-    id: 'cedar-shingle-halfround-copper',
-    title: '16 oz. Half-Round Copper Gutter & Round Outlet Assembly',
+    id: 'copper-half-round',
+    title: 'Copper Half-Round Gutters',
     category: 'copper',
-    categoryLabel: 'Custom Copper Gutters',
-    townPlaceholder: '[PLACEHOLDER: Town / Neighborhood]',
-    profileSpec: '6" Single-Bead Half-Round · 4" Smooth Round Drop',
-    materialGauge: '16 oz. Cold-Rolled Copper · Cast Brass Brackets',
-    scopeSummary:
-      'Fabricated and hung 16-ounce natural copper half-round gutters with external cast-brass circle hangers spaced 24 inches on center, matched with hand-soldered star outlets and two-piece elbows.',
-    craftDetail:
-      '50/50 tin-lead soldered seams fluxed and sweat-joined so natural brown-to-verdigris patina develops without sealant failure.',
-    image: copperHalfroundImg,
-    imageAlt:
-      'Detail photograph of 16-ounce natural copper half-round gutter with heavy brass brackets and hand-soldered outlet against white fascia and cedar shingles.',
+    categoryLabel: 'Copper Gutters',
+    neighborhood: '[PLACEHOLDER: Neighborhood]',
+    profileSpec: '[CONFIRM: 6" half-round · 4" round downspout]',
+    material: '[CONFIRM: 16 oz. copper]',
+    scopeSummary: '[PLACEHOLDER: what the job was, in one or two sentences]',
+    craftDetail: '[PLACEHOLDER: one detail worth pointing out]',
+    image: copperHalfRoundImg,
+    imageAlt: 'Placeholder image: copper half-round gutter with brass brackets.',
   },
   {
-    id: 'fieldstone-chimney-cricket',
-    title: 'Fieldstone Masonry Chimney Cricket & Stepped Reglet Flashing',
-    category: 'copper',
-    categoryLabel: 'Custom Flashing & Joinery',
-    townPlaceholder: '[PLACEHOLDER: Town / Neighborhood]',
-    profileSpec: 'Custom Brake-Bent Saddle Cricket · Cut-In Step Reglet',
-    materialGauge: '16 oz. Architectural Copper over High-Temp Ice & Water Shield',
-    scopeSummary:
-      'Engineered a custom-pitched copper saddle behind a wide fieldstone chimney stack that previously trapped ice dams, cut counter-flashing cleanly into mortar joints, and locked base flanges into adjacent standing seams.',
-    craftDetail:
-      'Zero exposed caulk joints in the primary water channel; mortar joints tucked with stainless wedges and breathable masonry sealant.',
-    image: chimneyFlashingImg,
-    imageAlt:
-      'Hand-soldered copper chimney saddle cricket and stepped counter-flashing around a natural fieldstone chimney intersecting a dark standing-seam metal roof.',
-  },
-  {
-    id: 'clapboard-eave-return-miter',
-    title: 'Porch Roof Standing-Seam & Patinated Copper Return',
-    category: 'gutters',
-    categoryLabel: 'Gutters + Porch Roof',
-    townPlaceholder: '[PLACEHOLDER: Town / Neighborhood]',
-    profileSpec: 'Standing-Seam Shed Porch · Half-Round Copper Return',
-    materialGauge: '24-Ga Charcoal Steel · 16 oz. Weathered Copper',
-    scopeSummary:
-      'Integrated lower-slope standing-seam porch roof drainage into a custom offset downspout return hugging the corner trim board to keep walkways dry and clear of ice.',
-    craftDetail:
-      'Custom two-angle rectangular-to-half-round downspout offset fabricated in-shop to clear projecting historic cornice molding.',
-    image: heroCraftImg,
-    imageAlt:
-      'Close exterior elevation of a dark charcoal standing-seam porch roof feeding into a patinated copper gutter and custom offset downspout return.',
+    id: 'corner-replacement',
+    title: 'Gutter Replacement and Downspout Return',
+    category: 'replacement',
+    categoryLabel: 'Gutter Replacement',
+    neighborhood: '[PLACEHOLDER: Neighborhood]',
+    profileSpec: '[CONFIRM: profile and downspout size]',
+    material: '[CONFIRM: material]',
+    scopeSummary: '[PLACEHOLDER: what the job was, in one or two sentences]',
+    craftDetail: '[PLACEHOLDER: one detail worth pointing out]',
+    image: gutterReturnImg,
+    imageAlt: 'Placeholder image: gutter and downspout return at a home’s corner.',
   },
 ];
 
 export const SITE_VISIT_STEPS = [
   {
     step: '01',
-    title: 'Direct Mechanic Measure — Not a Commission Sales Pitch',
-    duration: '25–40 min on site',
+    title: 'We Measure Your Home',
+    duration: '[PLACEHOLDER: how long a visit takes]',
     detail:
-      'An actual Buckland sheet-metal specialist inspects your rafter tails, fascia pitch, valley transitions, and downspout discharge paths from the ground and ladder. You do not need to sit through a two-hour kitchen-table presentation.',
+      'Someone from Buckland looks at your roofline, fascia and where the water needs to go. No sales pitch.',
   },
   {
     step: '02',
-    title: 'Itemized Gauge, Profile & Flashing Proposal',
-    duration: '[PLACEHOLDER: Quote Turnaround, e.g. 48–72 hrs]',
+    title: 'You Get a Written Quote',
+    duration: '[PLACEHOLDER: quote turnaround]',
     detail:
-      'You receive a clear written specification listing exact metal thickness (.032" aluminum, 24-ga steel, or 16 oz. copper), hanger spacing, downspout sizes, and line-item pricing—so you can compare apples to apples.',
+      'A clear written quote that lists the material, gutter size, downspouts and price, so you can compare it with any other bid.',
   },
   {
     step: '03',
-    title: 'Shop Pre-Fabrication & Clean Residential Install',
-    duration: 'Scheduled around clear weather',
+    title: 'We Install and Clean Up',
+    duration: 'Scheduled around the weather',
     detail:
-      'Custom flashings and miters are bent on our shop brake before the truck arrives; seamless gutters and panels are formed cleanly at the curb, with magnetic nail sweeps and full scrap haul-away before handoff.',
+      'Gutters are formed at your home in continuous lengths. The old gutters and every scrap go with us when we leave.',
   },
 ];

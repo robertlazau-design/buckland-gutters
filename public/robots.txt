@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+# Pre-launch. At launch: allow all and add Sitemap: <domain>/sitemap.xml
